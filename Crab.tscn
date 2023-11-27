@@ -1,0 +1,150 @@
+[gd_scene load_steps=21 format=3 uid="uid://b6txe4fghy14n"]
+
+[ext_resource type="Texture2D" uid="uid://cjy0q1xbic4js" path="res://warped-files/PNG/spritesheets/Fx/enemy-death.png" id="1_rl734"]
+[ext_resource type="Script" path="res://Crab.gd" id="1_uqy5p"]
+[ext_resource type="Texture2D" uid="uid://dmv8her4588ac" path="res://warped-files/PNG/sprites/enemies/crab-idle/crab-idle-1.png" id="1_xym8e"]
+[ext_resource type="Texture2D" uid="uid://clq4uvd35027l" path="res://warped-files/PNG/sprites/enemies/crab-idle/crab-idle-2.png" id="2_4tfar"]
+[ext_resource type="Texture2D" uid="uid://dnwm6pgfcu0en" path="res://warped-files/PNG/sprites/enemies/crab-idle/crab-idle-3.png" id="3_knv80"]
+[ext_resource type="Texture2D" uid="uid://b6a6h8nx4cqrv" path="res://warped-files/PNG/sprites/enemies/crab-idle/crab-idle-4.png" id="4_vjegi"]
+[ext_resource type="Texture2D" uid="uid://b2wok1mqqbkar" path="res://warped-files/PNG/sprites/enemies/crab-walk/crab-walk-1.png" id="5_prfif"]
+[ext_resource type="Texture2D" uid="uid://dihyv2nbtn7l7" path="res://warped-files/PNG/sprites/enemies/crab-walk/crab-walk-2.png" id="6_n217k"]
+[ext_resource type="Texture2D" uid="uid://cfuldvqxnl1ru" path="res://warped-files/PNG/sprites/enemies/crab-walk/crab-walk-3.png" id="7_7tho0"]
+[ext_resource type="Texture2D" uid="uid://dmb7cjc6oas7r" path="res://warped-files/PNG/sprites/enemies/crab-walk/crab-walk-4.png" id="8_phh63"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0m5n8"]
+size = Vector2(20, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dnxm"]
+atlas = ExtResource("1_rl734")
+region = Rect2(0, 0, 67, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bdv0f"]
+atlas = ExtResource("1_rl734")
+region = Rect2(67, 0, 67, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2h2rr"]
+atlas = ExtResource("1_rl734")
+region = Rect2(134, 0, 67, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3fmr"]
+atlas = ExtResource("1_rl734")
+region = Rect2(201, 0, 67, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lm11n"]
+atlas = ExtResource("1_rl734")
+region = Rect2(268, 0, 67, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qr83o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dnxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bdv0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2h2rr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3fmr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lm11n")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_xym8e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4tfar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_knv80")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_vjegi")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_prfif")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n217k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_7tho0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_phh63")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cbo42"]
+radius = 81.615
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uh7ss"]
+size = Vector2(11, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ghhun"]
+size = Vector2(27, 11)
+
+[node name="Crab" type="CharacterBody2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_uqy5p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-2, -6.5)
+shape = SubResource("RectangleShape2D_0m5n8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -12)
+sprite_frames = SubResource("SpriteFrames_qr83o")
+animation = &"Walk"
+
+[node name="PlayerDetection" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
+visible = false
+shape = SubResource("CircleShape2D_cbo42")
+
+[node name="PlayerDeath" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDeath"]
+visible = false
+position = Vector2(-2.5, -9)
+shape = SubResource("RectangleShape2D_uh7ss")
+
+[node name="PlayerCollision" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCollision"]
+visible = false
+position = Vector2(-2.5, -2.5)
+shape = SubResource("RectangleShape2D_ghhun")
+
+[node name="BulletCollision" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BulletCollision"]
+polygon = PackedVector2Array(0.5, 4.5, 12.5, 4, 11.5, -9.5, 8.5, -10, 7.5, -24.5, -11.5, -24, -13, -12, -14.5, -7, -19, 0.5, -16.5, 5.5)
+
+[connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
+[connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
+[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
+[connection signal="body_entered" from="PlayerCollision" to="." method="_on_player_collision_body_entered"]
+[connection signal="body_exited" from="PlayerCollision" to="." method="_on_player_collision_body_exited"]
+[connection signal="body_entered" from="BulletCollision" to="." method="_on_bullet_collision_body_entered"]
