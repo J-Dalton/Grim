@@ -460,8 +460,5 @@ actor = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 a_player = NodePath("../../AnimationPlayer")
 
-[node name="PlayerJumpingState" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "animator", "a_player")]
+[node name="PlayerJumpingState" type="Node" parent="FiniteStateMachine"]
 script = ExtResource("29_7t245")
-actor = NodePath("../..")
-animator = NodePath("../../AnimatedSprite2D")
-a_player = NodePath("../../AnimationPlayer")

@@ -3,48 +3,29 @@ extends State
 
 @export var actor: PlayerCharacter
 @export var animator: AnimatedSprite2D
+@export var a_player: AnimationPlayer
 
-var right = false
-var left = true
-var idleRight:bool
-var idleLeft:bool
-
-
-signal player_idle
+signal player_stopped_idle
+signal player_idle_jump
 
 func _ready():
 	set_physics_process(false)
-	
+
 func _enter_state() -> void:
 	set_physics_process(true)
-	animator.play("Idle")
+	
+	a_player.play("Idle")
 	
 	
 func _exit_state() -> void:
 	set_physics_process(false)
 	
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	var direction = Input.get_axis("Left", "Right")
-		
-	if direction == 0 && animator.flip_h == false:
-		
-
-		idleRight = true
-		idleLeft = false
-		
-	if direction == 0 && animator.flip_h == true:
-		
 	
-		idleRight = false
-		idleLeft = true
-		
-	if idleRight:
-		player_idle.emit()
+	if direction != 0:
+		player_stopped_idle.emit()
 	
-		
-	elif idleLeft:
-		player_idle.emit()
-
-	
-	
+	if Input.is_action_just_pressed("Jump"):
+		player_idle_jump.emit()
