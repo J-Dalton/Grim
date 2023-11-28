@@ -2,10 +2,8 @@ class_name PlayerCharacter
 extends CharacterBody2D
 
 const bulletPath = preload("res://bullet.tscn")
-
-
+var direction : float
 var slide_speed = 150.0
-
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @onready var anim = get_node("AnimationPlayer")
@@ -22,28 +20,27 @@ var idleLeft:bool
 @onready var player_jumping_state = $FiniteStateMachine/PlayerJumpingState as PlayerJumpingState
 
 
-
 func _ready():
 	player_running_state.player_stopped_running.connect(fsm.change_state.bind(player_idle_state))
 	player_idle_state.player_stopped_idle.connect(fsm.change_state.bind(player_running_state))
 	
+	player_idle_state.player_jumped_idle.connect(fsm.change_state.bind(player_jumping_state))
+	player_jumping_state.player_landed.connect(fsm.change_state.bind(player_idle_state))
+	
+	player_running_state.player_jumped_running.connect(fsm.change_state.bind(player_jumping_state))
+	player_jumping_state.player_landed.connect(fsm.change_state.bind(player_running_state))
+	
 func _physics_process(delta):
 
+	var shoot = Input.is_action_just_pressed("Click")
+	direction = Input.get_axis("Left", "Right")
 	
-	#var shoot = Input.is_action_just_pressed("Click")
-	
-	
-	
-#
 	if not is_on_floor():
 		if Game.playerGravity == "normal":
 			velocity.y += gravity * delta
 		if Game.playerGravity == "water":
 			velocity.y += 100 * delta
-#
-#
-#
-#
+
 #	if right && shoot && is_on_floor():
 #		anim.play("Run_Shooting")
 #
@@ -56,21 +53,20 @@ func _physics_process(delta):
 #	if idleLeft && shoot && is_on_floor():
 #		anim.play("Idle_Shooting")
 #
-#
-#
-	
 	#jump()
 #
 #
-#	if shoot:
-#		Shoot()
-#
+	if shoot:
+		Shoot()
+
+
+	if Game.playerHP <= 0:
+		queue_free()
+		get_tree().change_scene_to_file("res://main.tscn")
+	
 	move_and_slide()
-#
-#	if Game.playerHP <= 0:
-#		queue_free()
-#		get_tree().change_scene_to_file("res://main.tscn")
-		
+	update_direction()	
+	
 func Shoot():
 	var bullet = bulletPath.instantiate()
 	get_parent().add_child(bullet)
@@ -92,3 +88,10 @@ func directionPrint():
 	 "Left: ", left, "\n",
 	 "IdleRight: ", idleRight,"\n",
 	 "IdleLeft: ", idleLeft, "\n"))
+	
+func update_direction():
+	if direction > 0:
+		animSprite.flip_h = false
+	elif direction < 0:
+		animSprite.flip_h = true
+		

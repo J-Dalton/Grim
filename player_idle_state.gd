@@ -6,7 +6,7 @@ extends State
 @export var a_player: AnimationPlayer
 
 signal player_stopped_idle
-signal player_idle_jump
+signal player_jumped_idle
 
 func _ready():
 	set_physics_process(false)
@@ -24,8 +24,9 @@ func _exit_state() -> void:
 func _physics_process(_delta):
 	var direction = Input.get_axis("Left", "Right")
 	
-	if direction != 0:
-		player_stopped_idle.emit()
 	
 	if Input.is_action_just_pressed("Jump"):
-		player_idle_jump.emit()
+		player_jumped_idle.emit()
+	
+	if direction != 0:
+		player_stopped_idle.emit()

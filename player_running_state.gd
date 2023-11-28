@@ -10,7 +10,7 @@ const SPEED = 150.0
 const ACCEL = 15
 
 signal player_stopped_running
-signal player_jumping  
+signal player_jumped_running
 
 func _ready():
 	set_physics_process(false)
@@ -31,17 +31,14 @@ func _physics_process(_delta):
 	
 	
 	if actor.is_on_floor() && direction !=0:
-		if direction == -1:
-			animator.flip_h = true
-		if direction == 1:
-			animator.flip_h = false
 		actor.velocity.x = direction * SPEED
 	else:
 		actor.velocity.x = move_toward(actor.velocity.x, direction * SPEED, ACCEL)
 	
-	
-	if direction == 0 && actor.velocity.x == 0:
+	if actor.velocity.x == 0 && actor.is_on_floor():
 		player_stopped_running.emit()
 	
 	if Input.is_action_just_pressed("Jump"):
-		player_jumping.emit()
+		player_jumped_running.emit()
+	
+	
